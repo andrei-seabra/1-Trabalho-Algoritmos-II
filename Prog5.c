@@ -9,177 +9,183 @@ Exercício 5 - Este programa faz o gerenciomento de produtos.
 #include <string.h>
 
 #define NAME_LENGTH 100
-#define EXPIRATION_LENGTH 10
+#define EXPIRATION_LENGTH 11
+#define PRODUCTS_LENGTH 100
 
 struct product {
-    char productName[NAME_LENGTH];
-    float productPrice;
-    int productQuantity;
-    char productExpirationDate[EXPIRATION_LENGTH];
+    char name[NAME_LENGTH];
+    float price;
+    int quantity;
+    char expirationDate[EXPIRATION_LENGTH];
 };
-
-struct product registerProduct(char name[], float price, int quantity, char expirationDate[]) {
-    struct product newProduct;
-
-    strcpy(newProduct.productName, name);
-    newProduct.productPrice = price;
-    newProduct.productQuantity = quantity;
-    strcpy(newProduct.productExpirationDate, expirationDate);
-
-    return newProduct;
-}
-
-struct product searchProduct(struct product registeredProducts[], int productIndex, char name[], float price) {
-    struct product searchedProduct;
-
-    for (int i = 0; i < productIndex; i++) {
-        if (strcmp(registeredProducts[i].productName, name) == 0 || registeredProducts[i].productPrice == price) {
-            searchedProduct = registeredProducts[i];
-            return searchedProduct;
-        }
-    }
-}
-
-void showProductInfo(struct product selectedProduct) {
-    printf("\nInformacoes sobre %s:\nPreco: %f\nEstoque: %d\nData de validade: %s", selectedProduct.productName, selectedProduct.productPrice, selectedProduct.productQuantity, selectedProduct.productExpirationDate);
-}
-
-void updateProduct(struct product selectedProduct, struct product registeredProducts[], int productIndex) {
-    char newName[NAME_LENGTH], newExpirationDate[EXPIRATION_LENGTH];
-    int newQuantity = -1;
-    float newPrice = -1;
-
-    printf("\nPara manter o valor atual digite '-1'");
-
-    printf("\nDigite o novo nome: ");
-    scanf("%s", newName);
-
-    if (strcmp(newName, "-1") != 0) {
-        strcpy(selectedProduct.productName, newName);
-    }
-
-    printf("\nDigite o novo preco: ");
-    scanf("%f", &newPrice);
-
-    if (newPrice != -1) {
-        selectedProduct.productPrice = newPrice;
-    }
-
-    printf("\nDigite a nova quantidade: ");
-    scanf("%d", &newQuantity);
-
-    if (newQuantity != -1) {
-        selectedProduct.productQuantity = newQuantity;
-    }
-
-    printf("\nDigite a nova data de validade: ");
-    scanf("%s", newExpirationDate);
-
-    if (strcmp(newExpirationDate, "-1") != 0) {
-        strcpy(selectedProduct.productExpirationDate, newExpirationDate);
-    }
-
-    printf("\nProduto atualizado com sucesso.");
-}
 
 int getOption() {
     int option = 0;
 
-    printf("\n\n---- Menu ----\n1- Adicionar novo produto\n2- Atualizar produto\n3- Buscar produto\n4- Sair do sistema\nOpcao desejada: ");
-    scanf("%d", &option);
+    printf("\n---- Menu ----\n1- Cadastrar produto\n2- Atualizar produto\n3- Buscar produto\n4- Sair\nOpcao desejada: ");
+    scanf(" %d", &option);
 
     return option;
 }
 
+int registerProduct(char productName[NAME_LENGTH], float productPrice, int productQuantity, char productExpirationDate[EXPIRATION_LENGTH], int productIndex, struct product products[]) {
+    struct product newProduct;
+    
+    strcpy(newProduct.name, productName);
+    newProduct.price = productPrice;
+    newProduct.quantity = productQuantity;
+
+    if (strcmp(productExpirationDate, "-1") == 0) {
+        strcpy(newProduct.expirationDate, "nao info.");
+    } else {
+        strcpy(newProduct.expirationDate, productExpirationDate);
+    }
+
+    products[productIndex] = newProduct;
+
+    return ++productIndex;
+}
+
+int searchProduct(int productIndex, struct product products[], char searchedName[], float minPrice, float maxPrice) {
+    int searchedProductIndex;
+    
+    for (int i = 0; i < productIndex; i++) {
+        if (strcmp(products[i].name, searchedName) == 0 || products[i].price >= minPrice && products[i].price <= maxPrice) {
+            searchedProductIndex = i;
+            break;
+        } else {
+            searchedProductIndex = PRODUCTS_LENGTH + 1;
+        }
+    }
+
+    return searchedProductIndex;
+}
+
+void showSearchedProduct(struct product products[], int productIndex) {
+    struct product searchedProduct = products[productIndex];
+
+    printf("\nInformacoes sobre o(a) %s:\nPreco: %.2f\nQuantidade: %d\nValidade: %s\nId: %d", searchedProduct.name, searchedProduct.price, searchedProduct.quantity, searchedProduct.expirationDate, productIndex);
+}
+
+void updateProduct(struct product products[], int productIndex, char newName[], float newPrice, int newQuantity, char newExpirationDate[]) {
+    if (strcmp(newName, "-1") != 0) {
+        strcpy(products[productIndex].name, newName);
+    }
+    
+    if (newPrice != -1) {
+        products[productIndex].price = newPrice;
+    }
+    
+    if (newQuantity != -1) {
+        products[productIndex].quantity = newQuantity;
+    }
+    
+    if (strcmp(newExpirationDate, "-1") != 0) {
+        strcpy(products[productIndex].expirationDate, newExpirationDate);
+    }
+}
+
 void main() {
-    struct product registeredProducts[NAME_LENGTH];
-    struct product selectedProduct;
-
-    int option = 0, productIndex = 0, searchOption = 0, quantity = 0;
-    float price = 0;
-
-    char name[NAME_LENGTH], expirationDate[EXPIRATION_LENGTH];
+    int option = 0, productIndex = 0, searchedProductIndex = 0, quantity = 0, searchOption = 0;
+    char name[NAME_LENGTH], expirationDate[EXPIRATION_LENGTH], searchedName[NAME_LENGTH];
+    float price = 0, minPrice = 0, maxPrice = 0;
+    struct product products[PRODUCTS_LENGTH];
 
     option = getOption();
 
-    while (option != 4) {        
+    while (option != 4) {
         switch (option) {
-            case 1:
-                printf("\n---- Cadastro de produto ----");
+        case 1:
+            printf("\n---- Cadastrar produto ----");
 
+            printf("\nDigite o nome: ");
+            scanf(" %s", name);
+
+            printf("\nDigite o preco: ");
+            scanf(" %f", &price);
+
+            printf("\nDigite a quantidade em estoque: ");
+            scanf(" %d", &quantity);
+
+            printf("\nPara omitir a data de validade digite '-1'.");
+
+            printf("\nDigite a data de validade: ");
+            scanf(" %s", expirationDate);
+
+            productIndex = registerProduct(name, price, quantity, expirationDate, productIndex, products);
+
+            printf("\nProduto cadastrado.");
+            break;
+        case 2:
+            printf("\n---- Atualizar produto ----");
+
+            printf("\nDigite o Id (Ex: 5): ");
+            scanf("%d", &searchedProductIndex);
+
+            if (searchedProductIndex < 0 || searchedProductIndex >= productIndex) {
+                printf("\nProduto nao encontrado.");
+                break;
+            }
+
+            printf("\nPara manter os dados digite '-1'.");
+
+            printf("\nDigite o nome: ");
+            scanf(" %s", name);
+
+            printf("\nDigite o preco: ");
+            scanf(" %f", &price);
+
+            printf("\nDigite a quantidade em estoque: ");
+            scanf(" %d", &quantity);
+
+            printf("\nDigite a data de validade: ");
+            scanf(" %s", expirationDate);
+
+            updateProduct(products, searchedProductIndex, name, price, quantity, expirationDate);
+
+            printf("\nProduto atualizado.");
+            break;
+        case 3:
+            printf("\n---- Buscar produto ----");
+
+            printf("\nMetodo de busca:\n1- Nome\n2- Faixa de preco\nOpcao desejada: ");
+            scanf(" %d", &searchOption);
+
+            if (searchOption == 1) {
                 printf("\nDigite o nome do produto: ");
-                scanf("%s", name);
+                scanf(" %s", searchedName);
 
-                printf("\nDigite o preco do produto: ");
-                scanf("%f", &price);
+                searchedProductIndex = searchProduct(productIndex, products, searchedName, -1, -1);
 
-                printf("\nDigite a quantidade desse produto: ");
-                scanf("%d", &quantity);
-
-                printf("\nDigite a data de validade do produto: ");
-                scanf("%s", expirationDate);
-
-                registeredProducts[productIndex] = registerProduct(name, price, quantity, expirationDate);
-                productIndex++;
-
-                break;
-            case 2:
-                printf("\n---- Busca de produto ----\n1- Pelo nome do produto\n2- Pelo preco do produto\nOpcao desejada: ");
-                scanf("%d", &searchOption);
-
-                if (searchOption == 1) {
-                    char searchedName[NAME_LENGTH];
-
-                    printf("\nDigite o nome do produto: ");
-                    scanf("%s", searchedName);
-
-                    selectedProduct = searchProduct(registeredProducts, productIndex, searchedName, 0);
-
-                    updateProduct(selectedProduct, registeredProducts, productIndex);
-                } else if (searchOption == 2) {
-                    float searchedPrice;
-
-                    printf("\nDigite o preco do produto: ");
-                    scanf("%f", &searchedPrice);
-
-                    selectedProduct = searchProduct(registeredProducts, productIndex, NULL, searchedPrice);
-
-                    updateProduct(selectedProduct, registeredProducts, productIndex);
-                } else {
-                    printf("\nOpcao invalida.");
+                if (searchedProductIndex == PRODUCTS_LENGTH + 1) {
+                    printf("\nProduto nao encontrado.");
+                    break;
                 }
 
-                break;
-            case 3:
-                printf("\n---- Busca de produto ----\n1- Pelo nome do produto\n2- Pelo preco do produto\nOpcao desejada: ");
-                scanf("%d", &searchOption);
+                showSearchedProduct(products, searchedProductIndex);
+            } else if (searchOption == 2) {
+                printf("\nDigite o preco minimo: ");
+                scanf(" %f", &minPrice);
 
-                if (searchOption == 1) {
-                    char searchedName[NAME_LENGTH];
+                printf("\nDigite o preco maximo: ");
+                scanf(" %f", &maxPrice);
 
-                    printf("\nDigite o nome do produto: ");
-                    scanf("%s", searchedName);
+                searchedProductIndex = searchProduct(productIndex, products, searchedName, minPrice, maxPrice);
 
-                    selectedProduct = searchProduct(registeredProducts, productIndex, searchedName, 0);
-
-                    showProductInfo(selectedProduct);
-                } else if (searchOption == 2) {
-                    float searchedPrice;
-
-                    printf("\nDigite o preco do produto: ");
-                    scanf("%f", &searchedPrice);
-
-                    selectedProduct = searchProduct(registeredProducts, productIndex, NULL, searchedPrice);
-
-                    showProductInfo(selectedProduct);
-                } else {
-                    printf("\nOpcao invalida.");
+                if (searchedProductIndex == PRODUCTS_LENGTH + 1) {
+                    printf("\nProduto nao encontrado.");
+                    break;
                 }
 
-                break;
-            default:
+                showSearchedProduct(products, searchedProductIndex);
+            } else {
                 printf("\nOpcao invalida.");
-                break;
+            }
+
+            break;
+        default:
+            printf("\nOpcao invalida.");
+            break;
         }
 
         option = getOption();

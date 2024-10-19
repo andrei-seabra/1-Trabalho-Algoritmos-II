@@ -1,6 +1,6 @@
 /*
 1º Trabalho da disciplina Algoritmos e Fundamentos da Programação II – Outubro/2024
-Grupo:Andrei Amasilio Seabra RA> 15826294639 - Pedro Antônio Anastácio Borges RA: 12115138660
+Grupo:Andrei Amasilio Seabra RA: 15826294639 - Pedro Antônio Anastácio Borges RA: 12115138660
 Status: funciona perfeitamente
 Exercício 3 - Este programa calcula a média de 3 notas, aritmética e ponderada.
 */
