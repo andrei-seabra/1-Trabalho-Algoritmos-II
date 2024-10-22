@@ -32,7 +32,9 @@ int getOption() {
 }
 
 void showAvailableSeats(int layout[ROWS][COLUMNS], int i) {
-    for (int j = 0; j < COLUMNS; j++) {
+    int j;
+
+    for (j = 0; j < COLUMNS; j++) {
         if (layout[i][j] == NOT_OWNED) {
             printf("[O] ");
         }
@@ -43,7 +45,9 @@ void showAvailableSeats(int layout[ROWS][COLUMNS], int i) {
 }
 
 void showSeats(int layout[ROWS][COLUMNS]) {
-    for (int i = 0; i < ROWS; i++) {
+    int i;
+
+    for (i = 0; i < ROWS; i++) {
         switch (i) {
         case 0:
             printf("\nA: ");
@@ -121,9 +125,9 @@ int getRow(char rowLetter) {
 }
 
 int getColumn(int columnNumber) {
-    int column = 0;
+    int j, column = 0;
 
-    for (int j = 0; j < COLUMNS; j++) {
+    for (j = 0; j < COLUMNS; j++) {
         if (columnNumber == j) {
             column = j;
             break;
@@ -170,10 +174,10 @@ void buySeats(int layout[ROWS][COLUMNS]) {
 }
 
 void main() {
-    int layout[ROWS][COLUMNS], option = 0;
+    int i, j, layout[ROWS][COLUMNS], option = 0;
 
-    for (int i = 0; i < ROWS; i++) {
-        for (int j = 0; j < COLUMNS; j++) {
+    for (i = 0; i < ROWS; i++) {
+        for (j = 0; j < COLUMNS; j++) {
             layout[i][j] = NOT_OWNED;
         }
     }

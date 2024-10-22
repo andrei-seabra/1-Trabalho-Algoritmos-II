@@ -47,9 +47,9 @@ int registerProduct(char productName[NAME_LENGTH], float productPrice, int produ
 }
 
 int searchProduct(int productIndex, struct product products[], char searchedName[], float minPrice, float maxPrice) {
-    int searchedProductIndex;
+    int i, searchedProductIndex;
     
-    for (int i = 0; i < productIndex; i++) {
+    for (i = 0; i < productIndex; i++) {
         if (strcmp(products[i].name, searchedName) == 0 || products[i].price >= minPrice && products[i].price <= maxPrice) {
             searchedProductIndex = i;
             break;
