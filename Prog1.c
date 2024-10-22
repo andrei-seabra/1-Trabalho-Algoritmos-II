@@ -8,6 +8,10 @@ Exercício 1 - Este programa faz apuração de votos.
 #include <stdio.h>
 
 int getVote() {
+    /*
+        This function gets the user input to get his vote and returns it.
+    */
+
     int vote = 0;
 
     printf("\nCandidatos:\n1- Candidato 1\n2- Candidato 2\n3- Candidato 3\n4- Candidato 4\n5- Nulo\n6- Em branco\nSeu voto: ");
@@ -17,6 +21,11 @@ int getVote() {
 }
 
 void showResults(int candidate1, int candidate2, int candidate3, int candidate4, int null, int white) {
+    /*
+        This function displays to the user the number of votes that every candidate have.
+        Paramenters: represents the quantity of votes of each candidate.
+    */
+
     printf("\n---- Total de votos ----\nCandidato 1: %d voto(s)\nCandidato 2: %d voto(s)\nCandidato 3: %d voto(s)\nCandidato 4: %d voto(s)\nNulo:        %d voto(s)\nEm branco:   %d voto(s)", candidate1, candidate2, candidate3, candidate4, null, white);
 }
 

@@ -8,6 +8,11 @@ Exercício 3 - Este programa calcula a média de 3 notas, aritmética e ponderad
 #include <stdio.h>
 
 float calculateAverage(float grade1, float grade2, float grade3, char letter) {
+    /*
+        This function calculates the average of 3 grades based on the user's choice either normal or weighted average and return it.
+        Paramenters: represents the 3 grades of the student and how the average will be calculated.
+    */
+
     switch (letter) {
     case 'A':
         return (grade1 + grade2 + grade3) / 3; // calculate the average of the 3 grades

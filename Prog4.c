@@ -23,6 +23,10 @@ struct seatPosition {
 };
 
 int getOption() {
+    /*
+        This function gets the user input to get his option and returns it.
+    */
+
     int option = 0;
 
     printf("\n---- Menu ----\n1- Visualizar sessao\n2- Comprar bilhete\n3- Sair do sistema\nDigite a opcao desejada: ");
@@ -32,6 +36,11 @@ int getOption() {
 }
 
 void showAvailableSeats(int layout[ROWS][COLUMNS], int i) {
+    /*
+        This function displays to the user the seats that are still available of each row.
+        Paramenters: represents the seats layout and the index of the for loop.
+    */
+
     int j;
 
     for (j = 0; j < COLUMNS; j++) {
@@ -45,6 +54,11 @@ void showAvailableSeats(int layout[ROWS][COLUMNS], int i) {
 }
 
 void showSeats(int layout[ROWS][COLUMNS]) {
+    /*
+        This function displays the seats layout.
+        Paramenter: represents the seats layout.
+    */
+
     int i;
 
     for (i = 0; i < ROWS; i++) {
@@ -84,6 +98,11 @@ void showSeats(int layout[ROWS][COLUMNS]) {
 }
 
 void showPrice(int row) {
+    /*
+        This function displays the price of the reservation.
+        Paramenter: represents the row of the reserved seat.
+    */
+
     switch (row) {
     case 0:
     case 1:
@@ -98,6 +117,11 @@ void showPrice(int row) {
 }
 
 int getRow(char rowLetter) {
+    /*
+        This function checks and converts the row letter into the index of it and returns it.
+        Paramenters: represents the letter of ther row.
+    */
+
     int row = 0;
 
     switch (rowLetter) {
@@ -125,6 +149,11 @@ int getRow(char rowLetter) {
 }
 
 int getColumn(int columnNumber) {
+    /*
+        This function checks the number of the column and returns it.
+        Paramenter: represents the column number.
+    */
+
     int j, column = 0;
 
     for (j = 0; j < COLUMNS; j++) {
@@ -141,6 +170,11 @@ int getColumn(int columnNumber) {
 }
 
 void checkSeatAvailability(int row, int column, int seatAvailability) {
+    /*
+        This function checks if the seat exits and if it's not owned.
+        Paramenters: represents the row, column and availability of the seat.
+    */
+
     if (row == (ROWS + 1) || column == (COLUMNS + 1)) {
         printf("\nAssento nao encontrado.");
     }
@@ -152,21 +186,11 @@ void checkSeatAvailability(int row, int column, int seatAvailability) {
     }
 }
 
-void buySeats(int layout[ROWS][COLUMNS]) {
-    struct seatPosition chosenSeat;
-    int row, column;
-
-    printf("\n---- Comprar bilhete ----");
-
-    showSeats(layout);
-
-    printf("\nVIP: 'A' e 'B' | NORMAL: 'C', 'D' e 'E'");
-
-    printf("\nDigite o assento desejado (Ex: A5): ");
-    scanf(" %c%d", &chosenSeat.row, &chosenSeat.column);
-
-    row = getRow(chosenSeat.row);
-    column = getColumn(chosenSeat.column);
+void buySeats(int row, int column, int layout[ROWS][COLUMNS]) {
+    /*
+        This function sets the state of the seat as onwed.
+        Paramenters: represents the row and column of the seat, also the seats layout.
+    */
 
     checkSeatAvailability(row, column, layout[row][column]);
 
@@ -174,7 +198,8 @@ void buySeats(int layout[ROWS][COLUMNS]) {
 }
 
 void main() {
-    int i, j, layout[ROWS][COLUMNS], option = 0;
+    int i, j, layout[ROWS][COLUMNS], row, column, option = 0;
+    struct seatPosition chosenSeat;
 
     for (i = 0; i < ROWS; i++) {
         for (j = 0; j < COLUMNS; j++) {
@@ -190,7 +215,20 @@ void main() {
             showSeats(layout);
             break;
         case 2:
-            buySeats(layout);
+            printf("\n---- Comprar bilhete ----");
+
+            showSeats(layout);
+
+            printf("\nVIP: 'A' e 'B' | NORMAL: 'C', 'D' e 'E'");
+
+            printf("\nDigite o assento desejado (Ex: A5): ");
+            scanf(" %c%d", &chosenSeat.row, &chosenSeat.column);
+
+            row = getRow(chosenSeat.row);
+            column = getColumn(chosenSeat.column);
+
+            buySeats(row, column, layout);
+
             break;
         default:
             printf("\nOpcao invalida.");

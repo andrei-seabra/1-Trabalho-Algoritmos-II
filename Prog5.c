@@ -20,6 +20,10 @@ struct product {
 };
 
 int getOption() {
+    /*
+        This function gets the user input to get his option and returns it.
+    */
+
     int option = 0;
 
     printf("\n---- Menu ----\n1- Cadastrar produto\n2- Atualizar produto\n3- Buscar produto\n4- Sair\nOpcao desejada: ");
@@ -29,6 +33,11 @@ int getOption() {
 }
 
 int registerProduct(char productName[NAME_LENGTH], float productPrice, int productQuantity, char productExpirationDate[EXPIRATION_LENGTH], int productIndex, struct product products[]) {
+    /*
+        This function registers a new product to the products array.
+        Paramenters: represents the product's name, price, quantity and expiration date, also the index of the products array and the products array.
+    */
+
     struct product newProduct;
     
     strcpy(newProduct.name, productName);
@@ -47,6 +56,11 @@ int registerProduct(char productName[NAME_LENGTH], float productPrice, int produ
 }
 
 int searchProduct(int productIndex, struct product products[], char searchedName[], float minPrice, float maxPrice) {
+    /*
+        This function searchs a product by it's name or price range, and gets it's index and return it.
+        Paramenters: represents the index of the products array, the products array, the name searched, the minimum price and maximum price.
+    */
+
     int i, searchedProductIndex;
     
     for (i = 0; i < productIndex; i++) {
@@ -62,12 +76,22 @@ int searchProduct(int productIndex, struct product products[], char searchedName
 }
 
 void showSearchedProduct(struct product products[], int productIndex) {
+    /*
+        This function displays to the user the searched product's information.
+        Paramenters: represents the products array and the index of it.
+    */
+
     struct product searchedProduct = products[productIndex];
 
     printf("\nInformacoes sobre o(a) %s:\nPreco: %.2f\nQuantidade: %d\nValidade: %s\nId: %d", searchedProduct.name, searchedProduct.price, searchedProduct.quantity, searchedProduct.expirationDate, productIndex);
 }
 
 void updateProduct(struct product products[], int productIndex, char newName[], float newPrice, int newQuantity, char newExpirationDate[]) {
+    /*
+        This function updates the information of a given product.
+        Paramenters: represents the products array, the index of it, the new name, price, quantity and expiration date of the product.
+    */
+
     if (strcmp(newName, "-1") != 0) {
         strcpy(products[productIndex].name, newName);
     }
@@ -151,7 +175,7 @@ void main() {
             printf("\nMetodo de busca:\n1- Nome\n2- Faixa de preco\nOpcao desejada: ");
             scanf(" %d", &searchOption);
 
-            if (searchOption == 1) {
+            if (searchOption == 1) { // search by name
                 printf("\nDigite o nome do produto: ");
                 scanf(" %s", searchedName);
 
@@ -163,7 +187,7 @@ void main() {
                 }
 
                 showSearchedProduct(products, searchedProductIndex);
-            } else if (searchOption == 2) {
+            } else if (searchOption == 2) { // search by price range
                 printf("\nDigite o preco minimo: ");
                 scanf(" %f", &minPrice);
 
