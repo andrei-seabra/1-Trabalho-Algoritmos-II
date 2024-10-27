@@ -14,7 +14,7 @@ int getVote() {
 
     int vote = 0;
 
-    printf("\nCandidatos:\n1- Candidato 1\n2- Candidato 2\n3- Candidato 3\n4- Candidato 4\n5- Nulo\n6- Em branco\nSeu voto: ");
+    printf("\nCandidatos:\n1- Candidato 1\n2- Candidato 2\n3- Candidato 3\n4- Candidato 4\n5- Nulo\n6- Em branco \n0- Sair\nSeu voto: ");
     scanf("%d", &vote);
 
     return vote;
