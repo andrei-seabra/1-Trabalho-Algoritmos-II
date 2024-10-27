@@ -143,8 +143,25 @@ void main() {
         case 2:
             printf("\n---- Atualizar produto ----");
 
-            printf("\nDigite o Id (Ex: 5): ");
-            scanf("%d", &searchedProductIndex);
+            printf("\nMetodo de busca:\n1- Nome\n2- Faixa de preco\nOpcao desejada: ");
+            scanf(" %d", &searchOption);
+
+            if (searchOption == 1) { // search by name
+                printf("\nDigite o nome do produto: ");
+                scanf(" %s", searchedName);
+
+                searchedProductIndex = searchProduct(productIndex, products, searchedName, -1, -1);
+            } else if (searchOption == 2) { // search by price range
+                printf("\nDigite o preco minimo: ");
+                scanf(" %f", &minPrice);
+
+                printf("\nDigite o preco maximo: ");
+                scanf(" %f", &maxPrice);
+
+                searchedProductIndex = searchProduct(productIndex, products, searchedName, minPrice, maxPrice);
+            } else {
+                printf("\nOpcao invalida.");
+            }
 
             if (searchedProductIndex < 0 || searchedProductIndex >= productIndex) {
                 printf("\nProduto nao encontrado.");
@@ -181,7 +198,7 @@ void main() {
 
                 searchedProductIndex = searchProduct(productIndex, products, searchedName, -1, -1);
 
-                if (searchedProductIndex == PRODUCTS_LENGTH + 1) {
+                if (searchedProductIndex < 0 || searchedProductIndex >= productIndex) {
                     printf("\nProduto nao encontrado.");
                     break;
                 }
@@ -196,7 +213,7 @@ void main() {
 
                 searchedProductIndex = searchProduct(productIndex, products, searchedName, minPrice, maxPrice);
 
-                if (searchedProductIndex == PRODUCTS_LENGTH + 1) {
+                if (searchedProductIndex < 0 || searchedProductIndex >= productIndex) {
                     printf("\nProduto nao encontrado.");
                     break;
                 }
